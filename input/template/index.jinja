@@ -1,0 +1,30 @@
+{% extends "base.jinja" %}
+{% block css %} 
+  <link href="/css/index.css" rel="stylesheet" type="text/css"/>
+{% endblock %}
+
+{% block content %}
+  {% if (posts|length) > 0 %}
+
+    {% for post in posts[:3] %}
+      <div class="post">
+        <div class="post_desc">
+          <a href="{{post["path"]}}"><h2>{{post["title"]}}</h2></a>
+          {{ post["date"]|e }} 
+        </div>
+        <div class="post_content">
+          {{ post["content"] }}
+        </div>
+        <div class="post_link_box">
+          <a class="post_link" href="{{post['path']}}">详情</a>
+        </div>
+      </div>
+    {% endfor %}
+
+  {% else %}
+    这个家伙很懒，什么也没有留下
+  {% endif %}
+{% endblock %}
+
+{% block script %}
+{% endblock %}

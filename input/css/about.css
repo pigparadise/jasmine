@@ -1,0 +1,32 @@
+a {
+    color: #06406C;
+}
+
+body {
+    background-color: black;
+}
+
+#container {
+    background-color: black;
+}
+
+#aboutme {
+    min-height: 320px;
+    color: #2c2c2c;
+    font-size: 18px;
+    padding: 16px 0;
+}
+
+#avatar img{
+    margin: 0 16px 0 0;
+}
+
+#nav_top {
+    border-bottom: 1px solid #2c2c2c;
+    /* border-bottom: 1px solid #06406C */
+}
+
+#footer {
+    border-top: 1px solid #2c2c2c;
+    /* border-top: 1px solid #06406C */
+}

@@ -1,0 +1,19 @@
+{% extends "base.jinja" %}
+{% block css %} 
+  <link href="/css/tag.css" rel="stylesheet" type="text/css"/>
+{% endblock %}
+
+{% block content %}
+  <h2>{{ "%s年%s月" % date }}</h2>
+  {% for post in posts %}
+    <div>
+      <a href="/{{ post["path"]|e }}">{{ post["title"]|e }}</a>
+      <div style="float:right">{{ post["date"]|e }}</div>
+    </div>
+  {% endfor %}
+{% endblock %}
+
+{% block script %}
+{% endblock %}
+
+

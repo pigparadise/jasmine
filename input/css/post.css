@@ -1,0 +1,22 @@
+.post {
+    margin: 16px 0 0 0;
+}
+
+.post_desc {
+    border-bottom: 1px solid #BFBFBF;
+}
+.post_desc h2{
+    margin: 0;
+    color: #4A8DB8;
+    font-weight: normal;
+}
+
+.post_content {
+    padding: 0 0 16px 0;
+    min-height: 160px;
+    overflow: hidden;
+}
+
+.post_links {
+    margin: 0 0 16px 0;
+}

@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>{% block title %}{{ title|e }}{% endblock %}</title>
+    <link href="/css/base.css" rel="stylesheet" type="text/css"/>
+    {% block css %} {% endblock %}
+  </head>
+
+  <body>
+    <div id="container">
+      <div id="header">
+        <div id="site_desc">
+          <h1><a href="/">{{ site["name"] }}</a></h1>
+          <i>{{ site["desc"] }}</i>
+        </div>
+
+        <ul id="nav_top">
+          <li><a href="/about.html">AboutMe</a></li>
+        </ul>
+      </div>
+
+      <div id="content">
+        {% block content %}{% endblock %}
+      </div>
+
+      <div id="links_box">
+        <div id="tags_box">
+          <span>tags:</span>
+          {% for key, item in tags.iteritems() %}
+          <div>
+            <a href="/tags/{{key}}.html">{{key}}({{item|length }})</a>
+          </div>
+          {% endfor %}
+        </div>
+
+        <div id="archives_box">
+          <span>archives:</span>
+          {% for key, item in archives.iteritems() %}
+          <div>
+            <a href="/archives/{{"%s.%s"%key}}.html">{{"%s年%s月"%key}}({{ item|length }})</a>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div id="footer">
+        <span>powered by <a href="http://github.com/pigparadise/jasmine">jasmine</a></span>
+      </div>
+    </div>
+
+    {% block script %} {% endblock %}
+    <noscript>Please enable JavaScript</noscript>
+  </body>
+</html>

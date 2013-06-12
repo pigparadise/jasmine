@@ -1,0 +1,26 @@
+.post {
+    margin: 16px 0 48px 0;
+}
+.post_desc {
+    border-bottom: 1px solid #BFBFBF;
+}
+.post_desc h2{
+    margin: 0;
+    color: #4A8DB8;
+    font-weight: normal;
+}
+.post_content {
+    padding: 0 0 8px 0;
+    max-height: 160px;
+    overflow: hidden;
+}
+
+.post_link_box {
+    position: relative;
+    height: 16px;
+}
+
+.post_link {
+    position: absolute;
+    right: 0px;
+}
