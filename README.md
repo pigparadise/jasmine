@@ -1,29 +1,15 @@
-Static Blog Generator(Jasmine)
-=====================
+#Static Blog Generator(Jasmine)
 -----------------------------------------------------
 
-install
--------
-python2.*, jinja2, markdown
+##install
+python2.*, python-jinja2, python-markdown
 
 
-target
-------
-use markdown write blog, maybe add some others in future
+##template support
+markdown, jinja2
 
-user folders place blogs, ex: 2013/05/
+##usage
+python -i input_dir -o output_dir
 
-user jinja template render blog html
-
-* abc
-* abc
-
-- a
-- b
-> sdb
-
-> zd
-
-> adsf
-
-```printf('hello');```
+##version
+1.0.0

@@ -245,6 +245,16 @@ def main(input_dir, output_dir):
     copy_static(input_dir, output_dir)
 
 
+import optparse
+def get_optparse():
+    parser = optparse.OptionParser()
+    parser.add_option('-i', '--input', dest = 'input', default='./input',
+                      help = 'input dir', metavar='INPUT')
+    parser.add_option('-o', '--output', dest ='output', default="./output",
+                      help = 'output file', metavar='OUTPUT')
+    return parser
+
 if __name__ == '__main__':
-    main("./input", "./output")
+    opt, args = get_optparse().parse_args()
+    main(opt.input, opt.output)
 
