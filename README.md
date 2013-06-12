@@ -1,5 +1,5 @@
 #Static Blog Generator(Jasmine)
------------------------------------------------------
+
 
 ##install
 python2.*, python-jinja2, python-markdown
