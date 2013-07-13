@@ -3,40 +3,45 @@
   <link href="/css/post.css" rel="stylesheet" type="text/css"/>
 {% endblock %}
 {% block content %}
-  <div class="post">
-    <div class="post_desc">
-      <h2>{{post["title"]}}</h2>
-      {{ post["date"].strftime("%Y-%m-%d") }} 
-      <div style="float:right">
-        tags:
-        {% for tag in post["tags"] %}
-          <a href="/tags/{{ tag|e }}.html">{{ tag|e }}</a>
-        {% endfor %}
+  <div id="posts_box">
+    <div class="post">
+      <div class="post_desc">
+        <h2>{{post["title"]}}</h2>
+        {{ post["date"].strftime("%Y-%m-%d %H:%M:%S") }} 
+        <div style="float:right">
+          {% if post["tags"]|length %}
+            tags:
+            {% for tag in post["tags"] %}
+              <a href="/tags/{{ tag|e }}.html">{{ tag|e }}</a>
+            {% endfor %}
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="post_content">
+        {{ post["content"] }}
       </div>
     </div>
 
-    <div class="post_content">
-      {{ post["content"] }}
+    <div style="float:left" class="post_links">
+      {% if prev_post %} 
+        <a href="/{{prev_post["path"]}}">{{prev_post["title"]|e}}</a>
+      {% else %}
+        <a href="#">已经是第一篇</a>
+      {% endif %}
     </div>
-  </div>
 
-  <div style="float:left" class="post_links">
-    {% if prev_post %} 
-      <a href="/{{prev_post["path"]}}">{{prev_post["title"]|e}}</a>
-    {% else %}
-      <a href="#">已经是第一篇</a>
-    {% endif %}
-  </div>
+    <div style="float:right" class="post_links">
+      {% if next_post %} 
+        <a href="/{{next_post["path"]}}">{{next_post["title"]|e}}</a>
+      {% else %}
+        <a href="#">已经是最后一篇</a>
+      {% endif %}
+    </div>
 
-  <div style="float:right" class="post_links">
-    {% if next_post %} 
-      <a href="/{{next_post["path"]}}">{{next_post["title"]|e}}</a>
-    {% else %}
-      <a href="#">已经是最后一篇</a>
-    {% endif %}
+    <div id="disqus_thread"></div>
   </div>
-
-  <div id="disqus_thread"></div>
+  {% include "links.jinja" %}
 {% endblock %}
 
 {% block script %}

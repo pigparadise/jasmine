@@ -4,6 +4,7 @@
 {% endblock %}
 
 {% block content %}
+  <div id="posts_box">
   {% if (posts|length) > 0 %}
 
     {% for post in posts[:3] %}
@@ -24,6 +25,8 @@
   {% else %}
     这个家伙很懒，什么也没有留下
   {% endif %}
+  </div>
+  {% include "links.jinja" %}
 {% endblock %}
 
 {% block script %}

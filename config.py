@@ -2,9 +2,14 @@
 
 site = {
     "name": "pigparadise's BLOG",
-    "desc": "i love u"
+    "desc": "this too shall pass"
 }
+
 disqus = {
     "shortname": "pigparadise",
     "url": "http://pigparadise.github.com"
+}
+
+render = {
+    'blog': 'blog'
 }

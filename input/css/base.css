@@ -38,8 +38,16 @@ body {
     border-bottom: 1px solid #EBEBEB;
 }
 
+.nav_link{
+    display: inline;
+    margin-right: 8px;
+}
+
 #content {
-    min-height: 400px;
+    position: relative;
+    min-height: 588px;
+    margin: 0;
+    padding: 0 0 16px 0;
 }
 
 #footer {
@@ -49,23 +57,28 @@ body {
 }
 
 
+#posts_box {
+    width: 720px;
+    padding: 0 16px 0 0;
+    border-right: 1px solid #EBEBEB;
+}
+
 #links_box {
-    position: fixed;
-    top: 108px;
-    right: 68px;
-    width: 100px;
-    /* border: 1px solid #ddd; */
-    padding: 2px;
-    z-index: 1024;
-    /* background: url('../img/link_layer_bg.png'); */
+    width: 208px;
+    min-height: 588px;
+
+    position: absolute;
+    top: 0px;
+    right: 0px;
+
+    margin: 0;
+    padding: 0;
 }
 
 #tags_box {
-    clear: both;
     margin: 0;
 }
 
 #archives_box {
-    clear: both;
-    margin: 8px 0 0 0;
+    margin: 16px 0 0 0;
 }

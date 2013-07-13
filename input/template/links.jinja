@@ -1,0 +1,19 @@
+<div id="links_box">
+  <div id="tags_box">
+    <span>tags:</span>
+    {% for key, item in tags.iteritems() %}
+      <div>
+        <a href="/tags/{{key}}.html">{{key}}({{item|length }})</a>
+      </div>
+    {% endfor %}
+  </div>
+
+  <div id="archives_box">
+    <span>archives:</span>
+    {% for key, item in archives.iteritems() %}
+      <div>
+        <a href="/archives/{{key.strftime('%Y_%m')}}.html">{{key.strftime('%Y-%m')}}({{ item|length }})</a>
+      </div>
+    {% endfor %}
+  </div>
+</div>

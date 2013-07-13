@@ -7,7 +7,11 @@
     {% block css %} {% endblock %}
   </head>
 
-  <body>
+  <!--[if lt IE 7 ]> <body class="ie6"> <![endif]-->
+  <!--[if IE 7 ]> <body class="ie7"> <![endif]-->
+  <!--[if IE 8 ]> <body class="ie8"> <![endif]-->
+  <!--[if IE 9 ]> <body class="ie9"> <![endif]-->
+  <!--[if (gt IE 9)|!(IE)]><!--> <body> <!--<![endif]-->
     <div id="container">
       <div id="header">
         <div id="site_desc">
@@ -16,32 +20,13 @@
         </div>
 
         <ul id="nav_top">
-          <li><a href="/about.html">AboutMe</a></li>
+          <li class="nav_link"><a href="/index.html">Home</a></li>
+          <li class="nav_link"><a href="/about.html">AboutMe</a></li>
         </ul>
       </div>
 
       <div id="content">
         {% block content %}{% endblock %}
-      </div>
-
-      <div id="links_box">
-        <div id="tags_box">
-          <span>tags:</span>
-          {% for key, item in tags.iteritems() %}
-          <div>
-            <a href="/tags/{{key}}.html">{{key}}({{item|length }})</a>
-          </div>
-          {% endfor %}
-        </div>
-
-        <div id="archives_box">
-          <span>archives:</span>
-          {% for key, item in archives.iteritems() %}
-          <div>
-            <a href="/archives/{{"%s.%s"%key}}.html">{{"%s年%s月"%key}}({{ item|length }})</a>
-          </div>
-          {% endfor %}
-        </div>
       </div>
 
       <div id="footer">

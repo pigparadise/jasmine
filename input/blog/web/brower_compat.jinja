@@ -1,0 +1,37 @@
+{% set script = "<!--[if lt IE 8 ]> <![endif]-->" %}
+{% set script2 = '
+    <!--[if lt IE 7 ]> <body class="ie6"> <![endif]-->
+    <!--[if IE 7 ]> <body class="ie7"> <![endif]-->
+    <!--[if IE 8 ]> <body class="ie8"> <![endif]-->
+    <!--[if IE 9 ]> <body class="ie9"> <![endif]-->
+    <!--[if (gt IE 9)|!(IE)]><!--> <body> <!--<![endif]-->
+    '
+%}
+<p>
+  浏览器兼容性问题可能是每个国内前端工程师都比较蛋疼的问题的了，没办法，虽然IE6还有那么多占有率呢？有时只好感叹坐等360淘汰ie6了。
+</p>
+
+<p>
+  靠谱的办法总归还是有的，我们知道可以同下面的代码
+</p>
+
+<pre>
+  <code class="html">
+    {{ script|e }}
+  </code>
+</pre>
+
+<p>
+  判断是否为IE8浏览器的, 并利用它按浏览器加载js，于是有人想到用下列代码:
+</p>
+
+<pre>
+  <code class="html">
+    {{ script2|e }}
+  </code>
+</pre>
+
+<p>
+  代替body标签，然后就可以在css中使用.ie6, .ie7 开头写css即可了。<br>
+  这个方法由<a href="http://www.paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/" target="_blank">Paul Irish</a>发起, 笔者试了，确实不错，在此分享下.
+</p>

@@ -42,7 +42,7 @@ def write_file(fpath, data):
 def collect_blog_infos(input_dir):
     result = []
     for dirpath, dirnames, filenames in os.walk(input_dir):
-        rel_dirpath = dirpath[len(input_dir):].strip(os.sep)
+        rel_dirpath = 'blog/' + dirpath[len(input_dir):].strip(os.sep)
         posts = []
         mds = set([])
         jinjas = set([])
@@ -184,7 +184,7 @@ def parse_archives(infos):
     archives = {}
     for info in infos:
         date = info['date']
-        key = (date.year, date.month)
+        key = datetime(date.year, date.month, 1)
         if key not in archives:
             archives[key] = []
         archives[key].append({
@@ -202,13 +202,14 @@ def create_archives(infos, output_dir):
             "posts": posts
         }
         fdata = render_jinja("archive.jinja", params)
-        name = "%s.%s" % key
+        name = key.strftime('%Y_%m')
         fpath = os.path.join(output_dir, "archives/%s.html" % name)
         write_file(fpath, fdata)
 
 
 def create_index(infos, output_dir):
     r_data = {
+        "title": config.site['name'],
         "posts": infos
     }
     fdata = render_jinja("index.jinja", r_data)
