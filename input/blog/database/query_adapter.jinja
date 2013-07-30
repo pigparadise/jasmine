@@ -1,0 +1,120 @@
+<p>制作GM工具中聊天监控时，遇到一个这样的需求：</p>
+
+<p>
+  1.可以给聊天信息设置过滤器，颜色标示，将他们组合起来进行搜索。<br>
+  2.后台游戏的聊天日志数据库是mongodb，以后其他的游戏使用的数据库或数据结构一般不同。<br>
+</p>
+
+<p><b>记录了一下自己的几次改进:</b></p>
+<p>假设需要表达这样的搜索要求：</p>
+<p>玩家名为player1或player2或player3</p>
+<p>时间区间为t1~t2 或 t3~t4</p>
+<p>聊天内容包含 a,b,c 或 e,f,g </p>
+<p>1. 最初设计的搜索规则数据结构大概是 :</p>
+<pre>
+  <code class="html">
+    {
+      player_name: [player1, player2, player3],
+      time: [[t1,t2], [t3,t4]],
+      chat: [[a, b, c], [e, f, g]]
+    }
+  </code>
+</pre>
+<p>这个数据结构前端比较好处理，也很直白, 每个字段有各自的一套规则</p>
+<p>不过蜗牛大大指出这个不够灵活，有时需要一些更复杂的规则，比如否定，就不好实现。</p>
+
+<p>2. 所以想了下，加入一些逻辑操作符，为了好解析些，把操作符放在了最前面，就像lisp中的那样，只是这里用的是中括号，大概是这样:</p>
+<pre>
+  <code class="python">
+    ["and", 
+      [player_name，[player, player2, player3],
+      ["or", [time, [t1, t2]],  [time, [t3, t4]]],
+      ["or", [chat, [a, b, c]], [chat, [e, f, g]]],
+    ]
+  </code>
+</pre>
+<p>
+  当时想得这样就可以设置一些复杂些条件了，比如根操作符号可以是or。除了and，or，not。把player_name, time, chat也定义为操作符，里面的具体逻辑再单独实现。
+</p>
+<p>前端的解析就没有第一版那么方便了，也无法显示所有类型的条件，所以只解析和显示符合某些要求的数据。</p>
+<p>后面想了想，这个结构还是不够方便，至少player_name, time, chat需要进一步定义下对应的操作，增加和改动起来不太方便。</p>
+
+<p>3.分析了下mongo的搜索条件定义，于是再加了一些操作符号，比如in, range, has，regex, =, >, >=, <, <=等，然后把player_name, time, chat这些当作普通的参数。</p>
+<pre>
+  <code class="python">
+    ["and",
+      ["in", "player_name"，["player1", "player2", "player3"],
+      ["or", ["range", "time", [t1, t2]],  ["range", "time", [t3, t4]]],
+      ["or", ["and", ["chat",  "a|b|c"], ["regex", "chat",  "e|f|g"]]],
+    ]
+  </code>
+</pre>
+<p>目前自己对这个数据结构还算满意，为了前端稍微好解析些，range和has是语法糖性质的操作，解析时会分别用<=, >= 和 regex替换。这个数据结构实际是一颗语法树，可以称为一种DSL了。</p>
+
+
+<p><b>解析和转换部分:</b></p>
+<p>
+  我把搜索条件转换分了两个步骤：<br>
+  第一步是解析出相应的语法树，用递归实现即可；<br>
+  第二步是针对mongo的搜索要求，生成一个符合mongo的搜索条件，上面的会变成</p>
+
+<pre>
+  <code class="python">
+    {
+      "player_name": {"$in": ["player1", "player2", "player3"],
+      "$or": [
+        {"time": {"$gte": t1, "$lge": t2},
+        {"time": {"$lte": t3, "$gte":t4}},
+        {'chat': {'$regex': 'a|b|c'}},
+        {'chat': {'$regex': 'e|f|g'}}
+      ]
+    }
+  </code>
+</pre>
+
+<p>里面有些烦人的是逻辑合并和消除操作，目前有一些，比如：</p>
+<pre>
+  <code class="python">
+    and(a) => a
+    or(a) => a
+    and(a, b, c), and(e, f) => and(a, b, c, e, f);
+    and(or(a, b, c), or(e, f)) => or(a, b, c, e, f)
+    and(not(a), not(b)) => not(and(a, b))
+  </code>
+</pre>
+
+<p>
+  如果以后要生成其他数据库的查询条件，比如mysql的，第一步可以不变，只要写个第二步的相关类就可以了。
+</p>
+
+<p><b>前端方面：</b></p>
+<p>这个结构可以实现前端设置含有and，or，not的查询条件，但为了目前我们并需要做的那么复杂，只需要其中一个子集就可以了，于是定义成了{key1: 条件，key2:条件}的结构, 写了简单些的load和dump，上面会转换为:</p>
+
+<pre>
+  <code class="python">
+    {
+      "player_name": ["in", ["player1", "player2", "player3"]],
+      "time": ["or", 
+                ["range", [t1, t2]],
+                ["range",  t3,  t4]]
+              ],
+      "chat": ["or", 
+                ["regex", 'a|b|c'],
+                ["regex", 'e|f|g']
+              ]
+    }
+  </code>
+</pre>
+
+<p><b>其他:</b></p>
+<p>
+1. 在对游戏的数据时，发现它的日志数据结构和我的并不太一致，比如chat在里面是data字段下的message字段。于是就加一个replace_keys的步骤，把第二步转换得到mongo搜索条件中的一些key替换成需要的
+</p>
+<p>
+2. 在搜索出结果后，需要确定搜索结果符合哪些具体的过滤规则(搜索时会传的是一个过滤器列表，交给数据库是多个过滤器and的运算结果）<br>
+  这时不再好再分批使用数据库本身的搜索了，所以还需要再对每个结果和每个过滤再做一次匹配搜索，好在结果的数据结构已转成了统一格式。<br>
+  最后写了个match函数，使用第一步解析出来的语法树，去匹配下搜索结果(是个字典)，过程基本也是用递归。<br>
+  由于操作的两个对象都和具体的游戏数据结构无关，所以也可以达到通用的目的。<br>
+</p>
+
+<p><a target="_blank" href="https://github.com/pigparadise/cookies/tree/master/query_adapter">代码传送门</a></p>
