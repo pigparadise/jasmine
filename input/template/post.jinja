@@ -39,11 +39,18 @@
       {% endif %}
     </div>
 
-    <div id="disqus_thread"></div>
+    {# <div id="disqus_thread"></div> #}
+    <div class="ds-thread" 
+         data-thread-key="{{post["id"]}}" 
+         data-title="{{post["title"]}}"
+         data-url="{{"%s/blog/%s" % (duoshuo["url"], post["id"])}}">
+    </div>
+
   </div>
   {% include "links.jinja" %}
 {% endblock %}
 
 {% block script %}
-  {% include "disqus.jinja" %}
+  {# {% include "disqus.jinja" %} #}
+  {% include "duoshuo.jinja" %}
 {% endblock %}

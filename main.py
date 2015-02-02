@@ -23,6 +23,7 @@ def init_global_render_params(infos):
     g_rdata = {
         "site": config.site,
         "disqus": config.disqus,
+        "duoshuo": config.duoshuo,
         "tags": parse_tags(infos),
         "archives": parse_archives(infos),
     }

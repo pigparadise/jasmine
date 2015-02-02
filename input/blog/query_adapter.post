@@ -1,6 +1,6 @@
 {
-  "id": "database/query_adapter",
+  "id": "query_adapter",
   "title": "搜索条件适配器",
-  "tags": ["database", "dsl"],
+  "tags": ["dsl", "python"],
   "date": "2013-07-30 22:58"
 }

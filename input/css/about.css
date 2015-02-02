@@ -12,7 +12,8 @@ body {
 
 #aboutme {
     min-height: 320px;
-    color: #2c2c2c;
+    /* color: #2c2c2c; */
+    color: #888;
     font-size: 18px;
     padding: 16px 0;
 }

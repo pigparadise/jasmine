@@ -10,6 +10,11 @@ disqus = {
     "url": "http://pigparadise.github.com"
 }
 
+duoshuo = {
+    "shortname": "pigparadise",
+    "url": "http://pigparadise.github.com"
+}
+
 render = {
     'blog': 'blog'
 }
